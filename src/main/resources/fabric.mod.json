@@ -11,20 +11,22 @@
 
   "license": "MIT",
   "icon": "assets/deathmatch/icon.png",
-
+  "accessWidener": "tdm.accesswidener",
   "environment": "*",
   "entrypoints": {
     "main": [
       "net.kozibrodka.deathmatch.ModHelper"
     ],
     "stationapi:event_bus": [
-      "net.kozibrodka.deathmatch.events.Deathmatch",
       "net.kozibrodka.deathmatch.events.Listener"
     ],
     "stationapi:event_bus_client": [
       "net.kozibrodka.deathmatch.events.ClientListener"
     ],
     "stationapi:event_bus_server": [
+      "net.kozibrodka.deathmatch.events.Deathmatch"
+    ],
+    "gcapi3": [
     ]
   },
   "mixins": [

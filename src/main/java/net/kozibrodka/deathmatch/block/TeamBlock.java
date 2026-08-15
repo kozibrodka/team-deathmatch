@@ -2,6 +2,7 @@ package net.kozibrodka.deathmatch.block;
 
 import net.kozibrodka.deathmatch.events.ClientListener;
 import net.kozibrodka.deathmatch.events.Deathmatch;
+import net.kozibrodka.deathmatch.utils.EnvToolTDM;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
@@ -16,6 +17,9 @@ public class TeamBlock extends TemplateBlock {
 
     public boolean onUse(World world, int x, int y, int z, PlayerEntity player) {
         player.swingHand();
+        if(world.isRemote || EnvToolTDM.isEnvClient()){
+            return false;
+        }
         Deathmatch.addPlayerToTeam(isRed, player);
         return false;
     }

@@ -1,5 +1,6 @@
 package net.kozibrodka.deathmatch.events;
 
+import net.kozibrodka.deathmatch.block.KitBlock;
 import net.kozibrodka.deathmatch.block.TeamBlock;
 import net.kozibrodka.deathmatch.utils.ItemCoordStick;
 import net.mine_diver.unsafeevents.listener.EventListener;
@@ -21,6 +22,8 @@ public class Listener {
     public static Item coordStick;
     public static Block teamRed;
     public static Block teamBlue;
+    public static Block kit_ak;
+    //todo glass with cool text - unbreakable
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
@@ -29,7 +32,8 @@ public class Listener {
 
     @EventListener
     public void registerBlocks(BlockRegistryEvent event) {
-        teamRed = (TemplateBlock) new TeamBlock(Identifier.of(MOD_ID, "teamRed"), true).setTranslationKey(MOD_ID, "teamRed").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
-        teamBlue = (TemplateBlock) new TeamBlock(Identifier.of(MOD_ID, "teamBlue"), false).setTranslationKey(MOD_ID, "teamBlue").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        teamRed = new TeamBlock(Identifier.of(MOD_ID, "teamRed"), true).setTranslationKey(MOD_ID, "teamRed").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        teamBlue = new TeamBlock(Identifier.of(MOD_ID, "teamBlue"), false).setTranslationKey(MOD_ID, "teamBlue").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        kit_ak = new KitBlock(Identifier.of(MOD_ID, "kit_ak"), 1).setTranslationKey(MOD_ID, "kit_ak").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
     }
 }

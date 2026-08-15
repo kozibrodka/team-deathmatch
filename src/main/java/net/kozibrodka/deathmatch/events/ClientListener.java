@@ -23,6 +23,7 @@ public class ClientListener {
         teamBlue = registerBlockTexture("block/team_blue");
         cleanRed = registerBlockTexture("block/clean_red");
         cleanBlue = registerBlockTexture("block/clean_blue");
+        kit_ak = registerBlockTexture("block/kit_ak");
     }
 
     private int registerBlockTexture(String s) {

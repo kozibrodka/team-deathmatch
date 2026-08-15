@@ -3,6 +3,7 @@ package net.kozibrodka.deathmatch.utils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -32,6 +33,17 @@ public class ItemCoordStick extends TemplateItem {
 
         System.out.println("Tekst został skopiowany do schowka. Możesz go teraz wkleić!");
         return false;
+    }
+
+    public boolean preMine(ItemStack stack, BlockState state, int x, int y, int z, int side, PlayerEntity player) {
+        System.out.println("HIT");
+        System.out.println(player.world.getSeed());
+        return false;
+    }
+
+    protected enum Function{
+        COORDS,
+        SEED
     }
 
 

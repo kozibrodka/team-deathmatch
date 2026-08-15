@@ -4,6 +4,7 @@ public enum Phase {
 
     NULL(),
     WARMUP(),
+    STARTING(),
     MATCH(),
     AFTERMATH();
 
