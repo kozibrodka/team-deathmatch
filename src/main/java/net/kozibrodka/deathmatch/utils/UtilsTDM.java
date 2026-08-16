@@ -25,6 +25,20 @@ public class UtilsTDM {
         };
     }
 
+    public static boolean isInEnemySpawn(double playerX, double playerZ, boolean isRed) {
+        if(isRed) {
+            return Deathmatch.map.spawn_blue.containsIn2D(playerX, playerZ);
+        }else{
+            return Deathmatch.map.spawn_red.containsIn2D(playerX, playerZ);
+        }
+    }
+
+    public static boolean isInGameArea(double playerX, double playerZ){
+        return Deathmatch.map.game_area.containsIn2D(playerX,playerZ);
+    }
+
+
+
     public static Vec3i randomPosInRect(Vec3i corner1, Vec3i corner2, Random random) {
         int minX = Math.min(corner1.x, corner2.x);
         int maxX = Math.max(corner1.x, corner2.x);
@@ -38,17 +52,6 @@ public class UtilsTDM {
         return new Vec3i(x, y, z);
     }
 
-    public static void allPlayersToSpawn(World world){
-        if(Deathmatch.map == null){return;}
-
-        Vec3i loc;
-
-        for (Object player : world.players) {
-            loc = randomPosInRect(Deathmatch.map.spawn_lobby[0], Deathmatch.map.spawn_lobby[1], world.random);
-            ((PlayerEntity)player).setPositionAndAnglesKeepPrevAngles((float)loc.x + 0.5F, (float)loc.y + 0.1F, (float)loc.z + 0.5F, 0.0F, 0.0F);
-        }
-
-    }
 
     public static void movePlayerToTeamSpawn(ServerPlayerEntity player, World world){
         if(Deathmatch.map == null){return;}
@@ -62,23 +65,43 @@ public class UtilsTDM {
         }
     }
 
-    public static Vec3i getTeamSpawn(PlayerEntity player, World world){
-        if(Deathmatch.TEAM_RED.contains(player)){
-            return randomPosInRect(Deathmatch.map.spawn_red[0], Deathmatch.map.spawn_red[1], world.random);
+    public static void movePlayerToTeamWeapons(ServerPlayerEntity player, World world){
+        if(Deathmatch.map == null){return;}
+        Vec3i loc = getTeamWeapons(player, world);
+        if(loc != null){
+            player.networkHandler.teleport(loc.x + 0.5D, loc.y + 0.5D, loc.z + 0.5D, player.yaw, player.pitch);
+        }else{
+            System.out.println("Player has no team, cant teleport to spawn_team area");
         }
-        if(Deathmatch.TEAM_BLUE.contains(player)){
-            return randomPosInRect(Deathmatch.map.spawn_blue[0], Deathmatch.map.spawn_blue[1], world.random);
+    }
+
+    public static void movePlayerLobby(ServerPlayerEntity player, World world){
+        if(Deathmatch.map == null){return;}
+        Vec3i loc = getLobby(player, world);
+        player.networkHandler.teleport(loc.x + 0.5D, loc.y + 0.5D, loc.z + 0.5D, player.yaw, player.pitch);
+    }
+
+    public static Vec3i getTeamSpawn(PlayerEntity player, World world){
+        if(Deathmatch.TEAM_RED.contains(player.name)){
+            return Deathmatch.map.spawn_red.randomPosInXZPlane(world.random);
+        }
+        if(Deathmatch.TEAM_BLUE.contains(player.name)){
+            return Deathmatch.map.spawn_blue.randomPosInXZPlane(world.random);
         }
         return null;
     }
 
     public static Vec3i getTeamWeapons(PlayerEntity player, World world){
-        if(Deathmatch.TEAM_RED.contains(player)){
-            return randomPosInRect(Deathmatch.map.weapons_red[0], Deathmatch.map.weapons_red[1], world.random);
+        if(Deathmatch.TEAM_RED.contains(player.name)){
+            return Deathmatch.map.weapons_red.randomPosInXZPlane(world.random);
         }
-        if(Deathmatch.TEAM_BLUE.contains(player)){
-            return randomPosInRect(Deathmatch.map.weapons_blue[0], Deathmatch.map.weapons_blue[1], world.random);
+        if(Deathmatch.TEAM_BLUE.contains(player.name)){
+            return Deathmatch.map.weapons_blue.randomPosInXZPlane(world.random);
         }
         return null;
+    }
+
+    public static Vec3i getLobby(PlayerEntity player, World world){
+        return Deathmatch.map.spawn_lobby.randomPosInXZPlane(world.random);
     }
 }

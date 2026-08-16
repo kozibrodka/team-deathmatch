@@ -2,13 +2,17 @@ package net.kozibrodka.deathmatch.events;
 
 import net.kozibrodka.deathmatch.block.KitBlock;
 import net.kozibrodka.deathmatch.block.TeamBlock;
+import net.kozibrodka.deathmatch.network.TeamSyncPacket;
 import net.kozibrodka.deathmatch.utils.ItemCoordStick;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
+import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -35,5 +39,11 @@ public class Listener {
         teamRed = new TeamBlock(Identifier.of(MOD_ID, "teamRed"), true).setTranslationKey(MOD_ID, "teamRed").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
         teamBlue = new TeamBlock(Identifier.of(MOD_ID, "teamBlue"), false).setTranslationKey(MOD_ID, "teamBlue").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
         kit_ak = new KitBlock(Identifier.of(MOD_ID, "kit_ak"), 1).setTranslationKey(MOD_ID, "kit_ak").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+    }
+
+    @EventListener
+    public void registerPacket(PacketRegisterEvent event) {
+        Registry.register(PacketTypeRegistry.INSTANCE, MOD_ID.id("teamlist"), TeamSyncPacket.TYPE);
+
     }
 }

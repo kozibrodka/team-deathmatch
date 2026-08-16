@@ -1,13 +1,17 @@
 package net.kozibrodka.deathmatch.events;
 
+import net.kozibrodka.deathmatch.network.TeamSyncPacket;
 import net.kozibrodka.deathmatch.utils.MapTDM;
 import net.kozibrodka.deathmatch.utils.Phase;
 import net.kozibrodka.deathmatch.utils.UtilsTDM;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.event.tick.GameTickEvent;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 
+import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +35,7 @@ public class Deathmatch {
         tick = UtilsTDM.mcServ.ticks;
         /// Warm-up, oczekiwanie na komende start
         if(tick % 200 == 0){
-            addGlobalMessage("Choose teams by right-clicling on Blue/Red team block");
+            addGlobalMessage("Choose team by right-clicling on Blue/Red team block");
         }
     }
 
@@ -44,6 +48,8 @@ public class Deathmatch {
         }
         if(warmupReady == 1){
             gamePhase = Phase.MATCH;
+            allPlayerToWeapons();
+            addGlobalMessage("Match has started");
         }
     }
 
@@ -51,7 +57,9 @@ public class Deathmatch {
 
     }
 
-    public static boolean balanceTeamsSizes(){
+    /// -------------------------------------------------------------------------------------------------------------------------------------------- ///
+
+    public static boolean balanceTeamsSizes(World world){
         int redCount = TEAM_RED.size();
         int blueCount = TEAM_BLUE.size();
 
@@ -64,33 +72,57 @@ public class Deathmatch {
 
             if(redCount > blueCount){ /// Za dużo czerwonych
                 for (int i = 0; i < sila; i++) {
-                    PlayerEntity redPlayer = TEAM_RED.iterator().next();
-                    TEAM_RED.remove(redPlayer);
-                    addPlayerToTeam(false, redPlayer);
+                    String redName = TEAM_RED.iterator().next();
+                    TEAM_RED.remove(redName);
+                    addPlayerToTeam(false, world.getPlayer(redName));
                 }
             }
             if(blueCount > redCount){ /// Za dużo niebieskich
                 for (int i = 0; i < sila; i++) {
-                    PlayerEntity bluePlayer = TEAM_BLUE.iterator().next();
-                    TEAM_BLUE.remove(bluePlayer);
-                    addPlayerToTeam(false, bluePlayer);
+                    String blueName = TEAM_BLUE.iterator().next();
+                    TEAM_BLUE.remove(blueName);
+                    addPlayerToTeam(false, world.getPlayer(blueName));
                 }
             }
-
         }
-
-
         return true;
+    }
+
+    public static void teamUpMissingPlayers(){
+        boolean color = false;
+        for (Object gracz : UtilsTDM.mcServ.playerManager.players){
+            PlayerEntity player = (PlayerEntity) gracz;
+            if(!TEAM_BLUE.contains(player.name) && !TEAM_RED.contains(player.name)){
+                addPlayerToTeam(color, player);
+                color = !color;
+            }
+        }
     }
 
     public static void swapTeams(){
 
     }
 
+    public static void syncTeamsWithClients(){
+        for (Object playerObj : UtilsTDM.mcServ.playerManager.players){
+            PlayerEntity player = (PlayerEntity) playerObj;
+            PacketHelper.sendTo(player, new TeamSyncPacket(TEAM_RED, TEAM_BLUE));
 
+        }
+    }
+
+    public static void allPlayerToWeapons(){
+        for (Object playerObj : UtilsTDM.mcServ.playerManager.players){
+            ServerPlayerEntity player = (ServerPlayerEntity) playerObj;
+            UtilsTDM.movePlayerToTeamWeapons(player, player.world);
+        }
+    }
+
+
+    public static World world;
     public static MapTDM map;
-    public static final Set<PlayerEntity> TEAM_RED = new HashSet<>();
-    public static final Set<PlayerEntity> TEAM_BLUE = new HashSet<>();
+    public static final Set<String> TEAM_RED = new HashSet<String>();
+    public static final Set<String> TEAM_BLUE = new HashSet<String>();
     public static Phase gamePhase = Phase.NULL;
     static int tick;
     public static int warmupReady = 0;
@@ -98,14 +130,14 @@ public class Deathmatch {
     int BLUE_TICKETS;
 
     public static void addPlayerToTeam(boolean isRed, PlayerEntity player){
-        if(gamePhase == Phase.WARMUP){
+        if(gamePhase == Phase.WARMUP && map != null){
 //            (isRed ? TEAM_RED : TEAM_BLUE).add(player);
             String team = "";
             if(isRed){
-                TEAM_RED.add(player);
+                TEAM_RED.add(player.name);
                 team = "§cRed";
             }else{
-                TEAM_BLUE.add(player);
+                TEAM_BLUE.add(player.name);
                 team = "§9Blue";
             }
             addDirectMessage(player, "You have joined team " + team);

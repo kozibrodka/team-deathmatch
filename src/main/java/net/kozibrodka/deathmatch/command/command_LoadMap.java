@@ -25,6 +25,7 @@ public class command_LoadMap implements Command{
                 MapTDM newMap = UtilsTDM.getMap(strings[1].toLowerCase());
                 if(newMap != null){
                     Deathmatch.map = newMap;
+                    Deathmatch.world = player.world;
                     Deathmatch.gamePhase = Phase.WARMUP;
                     commandSource.sendFeedback("Team Deathmatch map loaded: " + strings[1].toLowerCase());
                 }else{

@@ -27,7 +27,8 @@ public class KitBlock extends TemplateBlock {
         if(world.isRemote || EnvToolTDM.isEnvClient()){
             return false;
         }
-        player.inventory.setStack(0, new ItemStack(Listener.coordStick));
+        giveKit(player); //todo update from client?...
+        player.inventory.markDirty();
         UtilsTDM.movePlayerToTeamSpawn((ServerPlayerEntity) player, world);
         return false;
     }
@@ -37,8 +38,9 @@ public class KitBlock extends TemplateBlock {
         switch(numberKit){
             case 1:
                 player.inventory.setStack(0, new ItemStack(Listener.coordStick));
-                player.inventory.setStack(1, new ItemStack(Listener.coordStick));
-                player.inventory.setStack(2, new ItemStack(Listener.coordStick));
+                player.inventory.setStack(1, new ItemStack(Item.WOODEN_SWORD));
+                player.inventory.setStack(2, new ItemStack(Item.APPLE));
+//                player.inventory.addStack()
                 break;
             case 2:
         }

@@ -14,11 +14,16 @@ public class command_Game implements Command {
             commandSource.sendFeedback("You must be a player to use this command");
             return;
         }
+        if(Deathmatch.map == null){
+            commandSource.sendFeedback("Team Deathmatch map is NULL, load one first");
+            return;
+        }
 
         if (strings.length > 1) {
             if (strings[1].equalsIgnoreCase("start")) {
-                if(Deathmatch.gamePhase == Phase.WARMUP) {
-                    if (Deathmatch.balanceTeamsSizes()) {
+                if(Deathmatch.gamePhase == Phase.WARMUP || Deathmatch.gamePhase == Phase.AFTERMATH) {
+                    Deathmatch.teamUpMissingPlayers();
+                    if (Deathmatch.balanceTeamsSizes(player.world)) {
                         Deathmatch.warmupReady = 300; ///600 - 30s
                         Deathmatch.gamePhase = Phase.STARTING;
                     }

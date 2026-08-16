@@ -31,7 +31,7 @@ public class PlayerManagerMixin {
         }
 
         if (Deathmatch.gamePhase == Phase.WARMUP || Deathmatch.gamePhase == Phase.STARTING) {
-            return UtilsTDM.randomPosInRect(Deathmatch.map.spawn_lobby[0], Deathmatch.map.spawn_lobby[1], world.random);
+            return Deathmatch.map.spawn_lobby.randomPosInXZPlane(world.random);
         }
 
         if (Deathmatch.gamePhase == Phase.MATCH) {

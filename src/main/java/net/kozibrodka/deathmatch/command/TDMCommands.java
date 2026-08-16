@@ -5,5 +5,6 @@ public class TDMCommands {
 
     public static void init() {
         CommandRegistry.add(new command_LoadMap());
+        CommandRegistry.add(new command_Game());
     }
 }
