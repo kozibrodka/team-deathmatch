@@ -17,6 +17,8 @@ public class MapTDM {
     public GameBox game_area;
     public GameBox spawn_red;
     public GameBox spawn_blue;
+    public GameBox home_red;
+    public GameBox home_blue;
     public GameBox weapons_red;
     public GameBox weapons_blue;
     public String map_name;

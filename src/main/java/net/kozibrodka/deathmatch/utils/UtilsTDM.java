@@ -3,7 +3,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.deathmatch.events.Deathmatch;
-import net.kozibrodka.deathmatch.maps.TestMapv1;
+import net.kozibrodka.deathmatch.maps.Map_glacier;
+import net.kozibrodka.deathmatch.maps.Map_testv1;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -19,17 +20,17 @@ public class UtilsTDM {
 
     public static MapTDM getMap(String name){
         return switch (name) {
-            case "v1" -> new TestMapv1();
-            case "v2" -> null;
+            case "v1" -> new Map_testv1();
+            case "glacier" -> new Map_glacier();
             default -> null;
         };
     }
 
-    public static boolean isInEnemySpawn(double playerX, double playerZ, boolean isRed) {
+    public static boolean isInEnemyHome(double playerX, double playerZ, boolean isRed) {
         if(isRed) {
-            return Deathmatch.map.spawn_blue.containsIn2D(playerX, playerZ);
+            return Deathmatch.map.home_blue.containsIn2D(playerX, playerZ);
         }else{
-            return Deathmatch.map.spawn_red.containsIn2D(playerX, playerZ);
+            return Deathmatch.map.home_red.containsIn2D(playerX, playerZ);
         }
     }
 

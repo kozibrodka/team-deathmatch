@@ -1,9 +1,11 @@
 package net.kozibrodka.deathmatch.events;
 
 import net.kozibrodka.deathmatch.block.KitBlock;
+import net.kozibrodka.deathmatch.block.TdmGlassBlock;
 import net.kozibrodka.deathmatch.block.TeamBlock;
 import net.kozibrodka.deathmatch.network.TeamSyncPacket;
 import net.kozibrodka.deathmatch.utils.ItemCoordStick;
+import net.kozibrodka.deathmatch.utils.ItemGlassFiller;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -24,14 +26,17 @@ public class Listener {
     public static Namespace MOD_ID = Null.get();
 
     public static Item coordStick;
+    public static Item glassEdit;
     public static Block teamRed;
     public static Block teamBlue;
     public static Block kit_ak;
+    public static Block lobbyGlass;
     //todo glass with cool text - unbreakable
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
         coordStick =  new ItemCoordStick(Identifier.of(MOD_ID, "coordStick")).setTranslationKey(MOD_ID, "coordStick");
+        glassEdit =  new ItemGlassFiller(Identifier.of(MOD_ID, "glassEdit")).setTranslationKey(MOD_ID, "glassEdit");
     }
 
     @EventListener
@@ -39,6 +44,7 @@ public class Listener {
         teamRed = new TeamBlock(Identifier.of(MOD_ID, "teamRed"), true).setTranslationKey(MOD_ID, "teamRed").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
         teamBlue = new TeamBlock(Identifier.of(MOD_ID, "teamBlue"), false).setTranslationKey(MOD_ID, "teamBlue").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
         kit_ak = new KitBlock(Identifier.of(MOD_ID, "kit_ak"), 1).setTranslationKey(MOD_ID, "kit_ak").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        lobbyGlass = new TdmGlassBlock(Identifier.of(MOD_ID, "lobbyGlass")).setTranslationKey(MOD_ID, "lobbyGlass").setUnbreakable().setResistance(6000000.0F).setSoundGroup(Block.GLASS_SOUND_GROUP);
     }
 
     @EventListener

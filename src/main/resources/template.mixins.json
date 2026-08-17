@@ -6,8 +6,9 @@
   "mixins": [
   ],
   "server": [
+    "PlayerEntityMixin",
     "PlayerManagerMixin",
-    "PlayerEntityMixin"
+    "ServerPlaterMixin"
   ],
   "client": [
     "PlayerRenderMixin"

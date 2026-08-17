@@ -1,0 +1,3 @@
+WYCHODZENIE Z GRY - nie usuwam gracza z LIST, aby nie było resetu przy rejoinie.
+
+Kiedy to by był problem? - gdyby dużo osób wyszło a potem dołączali inni i by ich źle balansowało ilościowo - mało prawdopodobne... oraz easy fix.

@@ -5,12 +5,19 @@ import net.kozibrodka.deathmatch.utils.Phase;
 import net.kozibrodka.deathmatch.utils.UtilsTDM;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
+import net.minecraft.server.network.ServerLoginNetworkHandler;
+import net.minecraft.server.network.ServerPlayerInteractionManager;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
@@ -61,4 +68,14 @@ public class PlayerManagerMixin {
         }
         return real;
     }
+
+    @Shadow private MinecraftServer server;
+
+
+//    @Inject(method = "connectPlayer", at = @At(value = "RETURN", ordinal = 4))
+//    private void injectConnect(ServerLoginNetworkHandler loginNetworkHandler, String name, CallbackInfoReturnable<ServerPlayerEntity> cir){
+//
+////        Deathmatch.syncTeamsWithIndividual(new ServerPlayerEntity(this.server, this.server.getWorld(0), name, new ServerPlayerInteractionManager(this.server.getWorld(0))));
+//        Deathmatch.syncTeamsWithIndividual(name);
+//    }
 }

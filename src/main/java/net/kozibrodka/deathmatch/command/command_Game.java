@@ -23,14 +23,15 @@ public class command_Game implements Command {
             if (strings[1].equalsIgnoreCase("start")) {
                 if(Deathmatch.gamePhase == Phase.WARMUP || Deathmatch.gamePhase == Phase.AFTERMATH) {
                     Deathmatch.teamUpMissingPlayers();
-                    if (Deathmatch.balanceTeamsSizes(player.world)) {
-                        Deathmatch.warmupReady = 300; ///600 - 30s
-                        Deathmatch.gamePhase = Phase.STARTING;
-                    }
+                    Deathmatch.balanceTeamsSizes(player.world);
+                    Deathmatch.warmupReady = 300; ///600 - 30s
+                    Deathmatch.gamePhase = Phase.STARTING;
                 }
             }
             if(strings[1].equalsIgnoreCase("swap")){
-
+                if(Deathmatch.gamePhase == Phase.WARMUP || Deathmatch.gamePhase == Phase.AFTERMATH) {
+                    Deathmatch.swapTeams();
+                }
             }
         }
     }

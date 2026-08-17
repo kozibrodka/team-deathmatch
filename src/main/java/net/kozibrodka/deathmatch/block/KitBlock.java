@@ -1,7 +1,7 @@
 package net.kozibrodka.deathmatch.block;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.deathmatch.events.ClientListener;
-import net.kozibrodka.deathmatch.events.Deathmatch;
 import net.kozibrodka.deathmatch.events.Listener;
 import net.kozibrodka.deathmatch.utils.EnvToolTDM;
 import net.kozibrodka.deathmatch.utils.UtilsTDM;
@@ -27,22 +27,30 @@ public class KitBlock extends TemplateBlock {
         if(world.isRemote || EnvToolTDM.isEnvClient()){
             return false;
         }
-        giveKit(player); //todo update from client?...
-        player.inventory.markDirty();
+        cleanInventory(player);
+        if(FabricLoader.getInstance().isModLoaded("sdk")){
+
+        }else{
+            giveVanillaKit(player);
+        }
         UtilsTDM.movePlayerToTeamSpawn((ServerPlayerEntity) player, world);
         return false;
     }
 
-    public void giveKit(PlayerEntity player){
-        cleanInventory(player);
+    public void giveVanillaKit(PlayerEntity player){
         switch(numberKit){
             case 1:
+
                 player.inventory.setStack(0, new ItemStack(Listener.coordStick));
-                player.inventory.setStack(1, new ItemStack(Item.WOODEN_SWORD));
+                player.inventory.setStack(1, new ItemStack(Item.DIAMOND_SWORD));
                 player.inventory.setStack(2, new ItemStack(Item.APPLE));
 //                player.inventory.addStack()
                 break;
             case 2:
+        }
+
+        if(player instanceof ServerPlayerEntity servPlayer){
+            servPlayer.currentScreenHandler.sendContentUpdates();
         }
     }
 

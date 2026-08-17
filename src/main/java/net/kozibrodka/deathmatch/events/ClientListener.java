@@ -17,6 +17,7 @@ public class ClientListener {
     @EventListener
     public void registerTextures(TextureRegisterEvent event) {
         Listener.coordStick.setTexture(Identifier.of(MOD_ID, "item/coorditem"));
+        Listener.glassEdit.setTexture(Identifier.of(MOD_ID, "block/glass"));
 
         clean = registerBlockTexture("block/clean");
         teamRed = registerBlockTexture("block/team_red");
@@ -24,6 +25,7 @@ public class ClientListener {
         cleanRed = registerBlockTexture("block/clean_red");
         cleanBlue = registerBlockTexture("block/clean_blue");
         kit_ak = registerBlockTexture("block/kit_ak");
+        glass = registerBlockTexture("block/glass");
     }
 
     private int registerBlockTexture(String s) {
@@ -40,4 +42,5 @@ public class ClientListener {
     public static int cleanRed;
     public static int cleanBlue;
     public static int kit_ak;
+    public static int glass;
 }

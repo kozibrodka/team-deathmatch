@@ -31,13 +31,18 @@ public class ItemCoordStick extends TemplateItem {
         // Umieszczenie tekstu w schowku
         schowek.setContents(stringSelection, null);
 
-        System.out.println("Tekst został skopiowany do schowka. Możesz go teraz wkleić!");
         return false;
     }
 
     public boolean preMine(ItemStack stack, BlockState state, int x, int y, int z, int side, PlayerEntity player) {
-        System.out.println("HIT");
-        System.out.println(player.world.getSeed());
+
+        String tekstDoSchowka = String.valueOf(player.world.getSeed());
+        StringSelection stringSelection = new StringSelection(tekstDoSchowka);
+        Clipboard schowek = Toolkit.getDefaultToolkit().getSystemClipboard();
+        schowek.setContents(stringSelection, null);
+
+//        System.out.println("HIT");
+//        System.out.println(player.world.getSeed());
         return false;
     }
 

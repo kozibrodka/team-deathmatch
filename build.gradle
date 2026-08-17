@@ -28,6 +28,13 @@ loom {
     }
 }
 
+loom.runs {
+    register("secondClient") {
+        client()
+        programArgs(["--username", "CTSG", "--uuid", "cb7afd42-6488-4bb9-9dd3-151aa66d7049"])
+    }
+}
+
 repositories {
     // Used for Babric Loom Extensions
     maven {
