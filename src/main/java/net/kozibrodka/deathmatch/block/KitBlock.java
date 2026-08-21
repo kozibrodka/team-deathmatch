@@ -22,14 +22,16 @@ public class KitBlock extends TemplateBlock {
         numberKit = kitID;
     }
 
+    @Override
     public boolean onUse(World world, int x, int y, int z, PlayerEntity player) {
         player.swingHand();
         if(world.isRemote || EnvToolTDM.isEnvClient()){
             return false;
         }
         cleanInventory(player);
+        player.heal(20);
         if(FabricLoader.getInstance().isModLoaded("sdk")){
-
+            SdkKitFactory.giveSdkKit(numberKit, player);
         }else{
             giveVanillaKit(player);
         }
@@ -65,7 +67,17 @@ public class KitBlock extends TemplateBlock {
         if(i == 1 || i == 0){
             return ClientListener.clean;
         }else{
-            return ClientListener.kit_ak;
+            return switch (numberKit) {
+                case 1 -> ClientListener.kit_ak;
+                case 2 -> ClientListener.kit_m4;
+                case 3 -> ClientListener.kit_sg552;
+                case 4 -> ClientListener.kit_shotgun;
+                case 5 -> ClientListener.kit_sniper;
+                case 6 -> ClientListener.kit_flame;
+                case 7 -> ClientListener.kit_rpg;
+                default -> ClientListener.clean;
+            };
+
         }
     }
 

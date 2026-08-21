@@ -16,6 +16,7 @@ public class ItemCoordStick extends TemplateItem {
         super(identifier);
     }
 
+    @Override
     public boolean useOnBlock(ItemStack stack, PlayerEntity user, World world, int x, int y, int z, int side) {
         user.sendMessage("Coords " + x + " " + y + " " + z);
 
@@ -34,8 +35,10 @@ public class ItemCoordStick extends TemplateItem {
         return false;
     }
 
+    @Override
     public boolean preMine(ItemStack stack, BlockState state, int x, int y, int z, int side, PlayerEntity player) {
 
+        player.sendMessage("Seed " + player.world.getSeed());
         String tekstDoSchowka = String.valueOf(player.world.getSeed());
         StringSelection stringSelection = new StringSelection(tekstDoSchowka);
         Clipboard schowek = Toolkit.getDefaultToolkit().getSystemClipboard();

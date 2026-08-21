@@ -2,6 +2,7 @@ package net.kozibrodka.deathmatch.mixin;
 
 import net.kozibrodka.deathmatch.events.Deathmatch;
 import net.kozibrodka.deathmatch.utils.Phase;
+import net.kozibrodka.deathmatch.utils.ServPlayerAccessor;
 import net.kozibrodka.deathmatch.utils.UtilsTDM;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,14 +19,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity {
+public abstract class PlayerEntityMixin extends LivingEntity implements ServPlayerAccessor {
 
     @Shadow public String name;
-    @Shadow public PlayerInventory inventory;
-    @Shadow public void dropItem(ItemStack stack, boolean throwRandomly) {}
 
-    @Shadow
-    public void increaseStat(Stat stat, int amount) {}
+    @Override
+    public void resetTeam(){
+        myTeam = 0;
+    }
 
     public PlayerEntityMixin(World world) {
         super(world);
@@ -50,7 +51,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 if(Deathmatch.TEAM_BLUE.contains(this.name)){myTeam = 2;}
             }
 //            System.out.println(livingTick + "  desercja: " + deserting);
-            if(UtilsTDM.isInEnemyHome(this.x, this.z, myTeam == 1) || !UtilsTDM.isInGameArea(this.x, this.z)){
+            if(UtilsTDM.isInEnemyHome(this.x, this.z, myTeam == 1) || (!UtilsTDM.isInGameArea(this.x, this.z) && !UtilsTDM.isInTeamWeapons(this.x, this.y, myTeam == 1))){
                 Deathmatch.addDirectMessage(world.getPlayer(this.name), "§4Return to combat area!");
                 if(deserting > 5){
                     damage(100);
@@ -66,6 +67,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             livingTick = 0;
         }
     }
+
+
 
 
     @Unique

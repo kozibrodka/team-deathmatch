@@ -3,6 +3,7 @@ package net.kozibrodka.deathmatch.events;
 import net.kozibrodka.deathmatch.network.TeamSyncPacket;
 import net.kozibrodka.deathmatch.utils.MapTDM;
 import net.kozibrodka.deathmatch.utils.Phase;
+import net.kozibrodka.deathmatch.utils.ServPlayerAccessor;
 import net.kozibrodka.deathmatch.utils.UtilsTDM;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,23 +49,20 @@ public class Deathmatch {
         }
         if(warmupReady == 1){
             allPlayerToWeapons();
-            TICKETS_BLUE = TICKETS_RED = 5;
+            TICKETS_BLUE = TICKETS_RED = setTickets(TEAM_BLUE.size() + TEAM_RED.size());
             addGlobalMessage("Match has started");
             gamePhase = Phase.MATCH;
             syncTeamsWithClients();
+            addGlobalMessage("§9BLUES: " + String.join(", ", TEAM_BLUE));
+            addGlobalMessage("§cReds: " + String.join(", ", TEAM_RED));
+            allPlayerTeamInfoReset();
         }
     }
 
     public void tickMatch(){
         if(tick % 200 == 0){
             addGlobalMessage("Tickets §cRed: §f" + TICKETS_RED +", §9Blue: §f" + TICKETS_BLUE);
-            addGlobalMessage("§9BLUES: " + String.join(", ", TEAM_BLUE));
-            addGlobalMessage("§cReds: " + String.join(", ", TEAM_RED));
         }
-
-
-
-
 
         if(matchClosure > 0){
             matchClosure--;
@@ -85,6 +83,22 @@ public class Deathmatch {
     }
 
     /// -------------------------------------------------------------------------------------------------------------------------------------------- ///
+
+    public int setTickets(int count){
+//        return count * 4; /// STANDARD
+        return 2; /// DEV DEBUG
+//        if(count <= 2){
+//            return 5;
+//        }else if(count <= 4){
+//            return 12;
+//        }else if(count <= 8){
+//            return 32;
+//        }else if(count <= 16){
+//            return 50;
+//        }else{
+//            return 80;
+//        }
+    }
 
     public static boolean balanceTeamsSizes(World world){
         int redCount = TEAM_RED.size();
@@ -131,6 +145,8 @@ public class Deathmatch {
         TEAM_BLUE.clear();
         TEAM_BLUE.addAll(temp);
         syncTeamsWithClients();
+        addGlobalMessage("Teams Swapped");
+        allPlayerTeamInfoReset();
     }
 
     public static void syncTeamsWithClients(){
@@ -141,7 +157,8 @@ public class Deathmatch {
     }
 
     public static void onPlayerConnect(PlayerEntity player){
-        System.out.println("CONNECT 1");
+//        System.out.println("CONNECT 1");
+        /// Kiedy to sie odpala? czy nie za czesto?
 
         if(map == null){
             syncTeamsWithIndividual(player);
@@ -154,9 +171,9 @@ public class Deathmatch {
         }
 
         if(gamePhase == Phase.MATCH || gamePhase == Phase.STARTING) { /// W TRAKCIE MECZU
-            System.out.println("CONNECT 2");
+//            System.out.println("CONNECT 2");
             if (!TEAM_RED.contains(player.name) && !TEAM_BLUE.contains(player.name)) {
-                System.out.println("CONNECT 3");
+//                System.out.println("CONNECT 3");
                 if (TEAM_RED.size() == TEAM_BLUE.size()) { /// EQUAL
                     if(TICKETS_RED == TICKETS_BLUE){
                         boolean flag = player.world.random.nextInt(2) == 0;
@@ -169,7 +186,7 @@ public class Deathmatch {
                 } else if (TEAM_RED.size() > TEAM_BLUE.size()) { /// MNIEJ OSÓB W BLUE
                     forcePlayerToTeam(false, player);
                 } else { /// MNIEJ OSÓB W RED
-                    System.out.println("CONNECT 4");
+//                    System.out.println("CONNECT 4");
                     forcePlayerToTeam(true, player);
                 }
                 if(gamePhase == Phase.STARTING){
@@ -198,6 +215,13 @@ public class Deathmatch {
         for (Object playerObj : UtilsTDM.mcServ.playerManager.players){
             ServerPlayerEntity player = (ServerPlayerEntity) playerObj;
             UtilsTDM.movePlayerLobby(player, player.world);
+        }
+    }
+
+    public static void allPlayerTeamInfoReset(){
+        for (Object playerObj : UtilsTDM.mcServ.playerManager.players){
+            ServerPlayerEntity player = (ServerPlayerEntity) playerObj;
+            ((ServPlayerAccessor)player).resetTeam();
         }
     }
 

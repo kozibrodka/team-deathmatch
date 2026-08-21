@@ -24,7 +24,7 @@ public class command_Game implements Command {
                 if(Deathmatch.gamePhase == Phase.WARMUP || Deathmatch.gamePhase == Phase.AFTERMATH) {
                     Deathmatch.teamUpMissingPlayers();
                     Deathmatch.balanceTeamsSizes(player.world);
-                    Deathmatch.warmupReady = 300; ///600 - 30s
+                    Deathmatch.warmupReady = 900; ///600 - 30s
                     Deathmatch.gamePhase = Phase.STARTING;
                 }
             }

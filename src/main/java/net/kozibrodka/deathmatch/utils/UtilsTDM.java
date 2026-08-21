@@ -4,6 +4,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.deathmatch.events.Deathmatch;
 import net.kozibrodka.deathmatch.maps.Map_glacier;
+import net.kozibrodka.deathmatch.maps.Map_port;
 import net.kozibrodka.deathmatch.maps.Map_testv1;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -22,6 +23,7 @@ public class UtilsTDM {
         return switch (name) {
             case "v1" -> new Map_testv1();
             case "glacier" -> new Map_glacier();
+            case "port" -> new Map_port();
             default -> null;
         };
     }
@@ -36,6 +38,14 @@ public class UtilsTDM {
 
     public static boolean isInGameArea(double playerX, double playerZ){
         return Deathmatch.map.game_area.containsIn2D(playerX,playerZ);
+    }
+
+    public static boolean isInTeamWeapons(double playerX, double playerZ, boolean isRed) {
+        if(isRed) {
+            return Deathmatch.map.weapons_red.containsIn2D(playerX, playerZ);
+        }else{
+            return Deathmatch.map.weapons_blue.containsIn2D(playerX, playerZ);
+        }
     }
 
 
@@ -58,8 +68,6 @@ public class UtilsTDM {
         if(Deathmatch.map == null){return;}
         Vec3i loc = getTeamSpawn(player, world);
         if(loc != null){
-//            mcServ.playerManager.
-//            player.setPositionAndAnglesKeepPrevAngles((float)loc.x + 0.5F, (float)loc.y + 0.1F, (float)loc.z + 0.5F, 0.0F, 0.0F);
             player.networkHandler.teleport(loc.x + 0.5D, loc.y + 0.5D, loc.z + 0.5D, player.yaw, player.pitch);
         }else{
             System.out.println("Player has no team, cant teleport to spawn_team area");
@@ -84,10 +92,20 @@ public class UtilsTDM {
 
     public static Vec3i getTeamSpawn(PlayerEntity player, World world){
         if(Deathmatch.TEAM_RED.contains(player.name)){
-            return Deathmatch.map.spawn_red.randomPosInXZPlane(world.random);
+            Vec3i pos;
+            do {
+                pos = Deathmatch.map.spawn_red.randomPosInXZPlane(world.random);
+            } while(!world.isAir(pos.x, pos.y, pos.z));
+
+            return pos;
         }
         if(Deathmatch.TEAM_BLUE.contains(player.name)){
-            return Deathmatch.map.spawn_blue.randomPosInXZPlane(world.random);
+            Vec3i pos;
+            do {
+                pos = Deathmatch.map.spawn_blue.randomPosInXZPlane(world.random);
+            } while(!world.isAir(pos.x, pos.y, pos.z));
+
+            return pos;
         }
         return null;
     }
@@ -103,6 +121,12 @@ public class UtilsTDM {
     }
 
     public static Vec3i getLobby(PlayerEntity player, World world){
-        return Deathmatch.map.spawn_lobby.randomPosInXZPlane(world.random);
+//        return Deathmatch.map.spawn_lobby.randomPosInXZPlane(world.random);
+        Vec3i pos;
+        do {
+            pos = Deathmatch.map.spawn_lobby.randomPosInXZPlane(world.random);
+        } while(!world.isAir(pos.x, pos.y, pos.z));
+
+        return pos;
     }
 }

@@ -25,6 +25,12 @@ public class ClientListener {
         cleanRed = registerBlockTexture("block/clean_red");
         cleanBlue = registerBlockTexture("block/clean_blue");
         kit_ak = registerBlockTexture("block/kit_ak");
+        kit_m4 = registerBlockTexture("block/kit_m4");
+        kit_sg552 = registerBlockTexture("block/kit_sg552");
+        kit_shotgun = registerBlockTexture("block/kit_shotgun");
+        kit_sniper = registerBlockTexture("block/kit_sniper");
+        kit_flame = registerBlockTexture("block/kit_flame");
+        kit_rpg = registerBlockTexture("block/kit_rpg");
         glass = registerBlockTexture("block/glass");
     }
 
@@ -42,5 +48,11 @@ public class ClientListener {
     public static int cleanRed;
     public static int cleanBlue;
     public static int kit_ak;
+    public static int kit_m4;
+    public static int kit_sg552;
+    public static int kit_shotgun;
+    public static int kit_sniper;
+    public static int kit_flame;
+    public static int kit_rpg;
     public static int glass;
 }

@@ -1,0 +1,13 @@
+item.@.coordStick.name=CoordStick
+item.@.glassEdit.name=GlassEdit
+
+tile.@.teamRed.name=Team Red
+tile.@.teamBlue.name=Team Blue
+tile.@.lobbyGlass.name=Glass
+tile.@.kit_ak.name=Kit
+tile.@.kit_m4.name=Kit
+tile.@.kit_sg552.name=Kit
+tile.@.kit_shotgun.name=Kit
+tile.@.kit_sniper.name=Kit
+tile.@.kit_flame.name=Kit
+tile.@.kit_rpg.name=Kit

@@ -30,6 +30,12 @@ public class Listener {
     public static Block teamRed;
     public static Block teamBlue;
     public static Block kit_ak;
+    public static Block kit_m4;
+    public static Block kit_sg552;
+    public static Block kit_shotgun;
+    public static Block kit_sniper;
+    public static Block kit_flame;
+    public static Block kit_rpg;
     public static Block lobbyGlass;
     //todo glass with cool text - unbreakable
 
@@ -41,9 +47,15 @@ public class Listener {
 
     @EventListener
     public void registerBlocks(BlockRegistryEvent event) {
-        teamRed = new TeamBlock(Identifier.of(MOD_ID, "teamRed"), true).setTranslationKey(MOD_ID, "teamRed").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
-        teamBlue = new TeamBlock(Identifier.of(MOD_ID, "teamBlue"), false).setTranslationKey(MOD_ID, "teamBlue").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
-        kit_ak = new KitBlock(Identifier.of(MOD_ID, "kit_ak"), 1).setTranslationKey(MOD_ID, "kit_ak").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        teamRed = new TeamBlock(Identifier.of(MOD_ID, "teamRed"), true).setTranslationKey(MOD_ID, "teamRed").setUnbreakable().setResistance(6000000.0F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        teamBlue = new TeamBlock(Identifier.of(MOD_ID, "teamBlue"), false).setTranslationKey(MOD_ID, "teamBlue").setUnbreakable().setResistance(6000000.0F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        kit_ak = new KitBlock(Identifier.of(MOD_ID, "kit_ak"), 1).setTranslationKey(MOD_ID, "kit_ak").setUnbreakable().setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        kit_m4 = new KitBlock(Identifier.of(MOD_ID, "kit_m4"), 2).setTranslationKey(MOD_ID, "kit_m4").setUnbreakable().setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        kit_sg552 = new KitBlock(Identifier.of(MOD_ID, "kit_sg552"), 3).setTranslationKey(MOD_ID, "kit_sg552").setUnbreakable().setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        kit_shotgun = new KitBlock(Identifier.of(MOD_ID, "kit_shotgun"), 4).setTranslationKey(MOD_ID, "kit_shotgun").setUnbreakable().setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        kit_sniper = new KitBlock(Identifier.of(MOD_ID, "kit_sniper"), 5).setTranslationKey(MOD_ID, "kit_sniper").setUnbreakable().setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        kit_flame = new KitBlock(Identifier.of(MOD_ID, "kit_flame"), 6).setTranslationKey(MOD_ID, "kit_flame").setUnbreakable().setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
+        kit_rpg = new KitBlock(Identifier.of(MOD_ID, "kit_rpg"), 7).setTranslationKey(MOD_ID, "kit_rpg").setUnbreakable().setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
         lobbyGlass = new TdmGlassBlock(Identifier.of(MOD_ID, "lobbyGlass")).setTranslationKey(MOD_ID, "lobbyGlass").setUnbreakable().setResistance(6000000.0F).setSoundGroup(Block.GLASS_SOUND_GROUP);
     }
 
